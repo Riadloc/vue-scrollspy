@@ -12,18 +12,17 @@ module.exports = {
   },
   output: {
     path: resolve('dist'),
-    filename: '[name].js',
-    publicPath: './'
+    filename: '[name].js'
   },
   resolve: {
-    extensions: ['.js', '.vue', 'json'],
+    extensions: ['.js', '.vue', '.json'],
     modules: [
       resolve('node_modules'),
       resolve('src')
     ],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': path.resolve(__dirname, './src'),
+      '@': resolve('src'),
     }
   },
   module: {
@@ -52,26 +51,30 @@ module.exports = {
             limit: 10000
           }
         }
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        include: resolve('src'),
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 10000
+          }
+        }
       }
     ]
   },
   devServer: {
     compress: true,
     port: 9000,
-    // before: function() {
-    //   console.log('> Starting dev server...')
-    // },
-    // after: function() {
-    //   const uri = 'http://localhost:' + 9000
-    //   console.log('> Listening at ' + uri + '\n')
-    // }
+    stats: 'errors-only',
+    open: true
   },
   plugins: [
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       title: 'Vue Scrollspy',
-      filename: 'index.html',
-      template: 'index.html'
+      template: './index.html'
     })
   ]
 }

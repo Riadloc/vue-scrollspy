@@ -66,9 +66,12 @@ module.exports = {
   },
   devServer: {
     compress: true,
+    overlay: {
+      warnings: true,
+      errors: true
+    },
     port: 9000,
-    stats: 'errors-only',
-    open: true
+    stats: 'errors-only'
   },
   plugins: [
     new VueLoaderPlugin(),

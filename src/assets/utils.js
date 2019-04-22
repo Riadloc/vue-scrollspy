@@ -1,17 +1,23 @@
 function throttle(callback, timeout) {
-  let timer, last
+  let timer, last = 0
 
   return function() {
     const now = +new Date();
-    const timePasted = Boolean(last) && now > last + timeout
-    if (timePasted) {
-      callback()
+    const remaining = timeout - (now - last);
+    if (remaining <= 0) {
+      if (timer) {
+        clearTimeout(timer)
+        timer = null
+      }
       last = now
+      callback()
     } else {
       clearTimeout(timer)
       timer = setTimeout(() => {
+        last = now
+        timer = null
         callback()
-      }, timeout)
+      }, remaining)
     }
   }
 }

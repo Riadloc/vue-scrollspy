@@ -18,7 +18,7 @@ const scrollSpy = {
     current: {
       type: String
     },
-    currentClass: {
+    activeClass: {
       type: String
     },
     offset: {
@@ -53,16 +53,16 @@ const scrollSpy = {
       this.spy()
     },
     onEvent() {
-      this.rootEl.addEventListener('scroll', throttle(this.spy, 1000))
+      this.fn = throttle(this.spy, 500)
+      this.rootEl.addEventListener('scroll', this.fn)
     },
     offEvent() {
-      this.rootEl.removeEventListener('scroll', this.handleSpy())
+      this.rootEl.removeEventListener('scroll', this.fn)
     },
     handleSpy() {
-      throttle(this.spy, 1000)()
+      throttle(this.spy, 1000)
     },
     spy() {
-      console.log(43)
       const { targets, items } = this
       let hasInView = false
       let activeIndex
@@ -75,9 +75,13 @@ const scrollSpy = {
         }
       }
       this.activeIndex = activeIndex
+      
       let current = activeIndex && items[activeIndex]
-      this.$emit('update:current', current)
-      this.$emit('on-update', current)
+      if (this.current !== current) {
+        this.current = current
+        this.$emit('update:current', current)
+        this.$emit('on-update', current)
+      }
     },
     isInView(el) {
       if (!el) {
@@ -114,10 +118,10 @@ const scrollSpy = {
     },
     processClassName(classStr, index) {
       const clsList = classStr.split(' ')
-      let curIndex = clsList.indexOf(this.currentClass)
+      let curIndex = clsList.indexOf(this.activeClass)
       if (this.activeIndex === index) {
         if (!~curIndex) {
-          clsList.push(this.currentClass)
+          clsList.push(this.activeClass)
         }
       } else {
         if (~curIndex) {

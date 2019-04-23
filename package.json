@@ -1,4 +1,5 @@
 {
+  "name": "vue-use-scrollspy",
   "version": "0.1.1",
   "description": "vue scrollspy component, for detecting enter/exit of elements in the viewport when the user scrolls.",
   "keywords": [

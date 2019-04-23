@@ -6,13 +6,16 @@ const resolve = function(dir) {
   return path.join(__dirname, dir);
 }
 
-module.exports = {
+const config = {
   entry: {
     app: './src/app.js'
   },
   output: {
     path: resolve('dist'),
-    filename: '[name].js'
+    filename: '[name].js',
+    library: 'vue-use-scrollspy',
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -74,10 +77,24 @@ module.exports = {
     stats: 'errors-only'
   },
   plugins: [
-    new VueLoaderPlugin(),
-    new HtmlWebpackPlugin({
-      title: 'Vue Scrollspy',
-      template: './index.html'
-    })
+    new VueLoaderPlugin()
   ]
+}
+
+module.exports = (env, argv) => {
+  if (argv.mode === 'development') {
+    config.plugins.push(
+      new HtmlWebpackPlugin({
+        title: 'Vue Scrollspy',
+        template: './index.html'
+      })
+    )
+  }
+  else if (argv.mode === 'production') {
+    config.entry = {
+      scrollspy: './src/components/scrollspy.js'
+    }
+    config.externals = 'vue'
+  }
+  return config;
 }

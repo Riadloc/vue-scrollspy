@@ -8,7 +8,7 @@ const resolve = function(dir) {
 
 const config = {
   entry: {
-    app: './src/app.js'
+    app: './src/main.js'
   },
   output: {
     path: resolve('dist'),

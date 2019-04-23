@@ -78,7 +78,6 @@ const scrollSpy = {
       
       let current = activeIndex && items[activeIndex]
       if (this.current !== current) {
-        this.current = current
         this.$emit('update:current', current)
         this.$emit('on-update', current)
       }
@@ -150,4 +149,4 @@ const scrollSpy = {
   }
 }
 
-export default Vue.component('scroll-spy', scrollSpy)
+export default Vue.extend(scrollSpy)

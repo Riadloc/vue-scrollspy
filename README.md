@@ -1,6 +1,6 @@
 # Vue Scrollspy
 [![npm version](https://img.shields.io/npm/v/vue-use-scrollspy.svg?label=version&style=popout-square)](https://www.npmjs.com/package/vue-use-scrollspy)
-[![size](https://img.shields.io/github/size/riadloc/vue-scrollspy/dist/scrollspy.js.svg?style=popout-square)](https://github.com/Riadloc/vue-scrollspy/blob/master/dist/scrollspy.js)
+[![size](https://img.shields.io/github/size/riadloc/vue-scrollspy/lib/scrollspy.js.svg?style=popout-square)](https://github.com/Riadloc/vue-scrollspy/blob/master/dist/scrollspy.js)
 [![Licence](https://img.shields.io/github/license/riadloc/vue-scrollspy.svg?style=popout-square)](https://github.com/Riadloc/vue-scrollspy)
 ## Description
 

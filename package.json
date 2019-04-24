@@ -1,6 +1,6 @@
 {
   "name": "vue-use-scrollspy",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "vue scrollspy component, for detecting enter/exit of elements in the viewport when the user scrolls.",
   "keywords": [
     "vue",
@@ -8,10 +8,11 @@
     "component",
     "vue-component"
   ],
-  "main": "dist/scrollspy",
+  "main": "lib/scrollspy",
   "scripts": {
-    "dev": "webpack-dev-server --mode development --hot --color",
-    "build": "webpack --mode production",
+    "dev": "webpack-dev-server --hot --color --env.development",
+    "build": "webpack --env.production",
+    "docs": "webpack --env.docs",
     "prepublishOnly": "npm run build"
   },
   "author": "riadloc",

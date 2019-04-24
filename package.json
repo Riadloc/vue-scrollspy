@@ -12,7 +12,8 @@
   "scripts": {
     "dev": "webpack-dev-server --hot --color --env.development",
     "build": "webpack --env.production",
-    "docs": "webpack --env.docs",
+    "predeploy": "webpack --env.docs",
+    "deploy": "gh-pages -d dist",
     "prepublishOnly": "npm run build"
   },
   "author": "riadloc",
@@ -35,6 +36,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-vue-app": "^2.0.0",
     "css-loader": "^2.1.1",
+    "gh-pages": "^2.0.1",
     "html-webpack-plugin": "^3.2.0",
     "postcss-loader": "^3.0.0",
     "style-loader": "^0.23.1",

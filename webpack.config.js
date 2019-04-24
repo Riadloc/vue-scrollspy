@@ -6,16 +6,15 @@ const resolve = function(dir) {
   return path.join(__dirname, dir);
 }
 
-const config = {
+let config = {
   entry: {
     app: './src/main.js'
   },
   output: {
     path: resolve('dist'),
     filename: '[name].js',
-    library: 'vue-use-scrollspy',
-    libraryTarget: 'umd',
-    umdNamedDefine: true
+    publicPath: '/',
+    chunkFilename: '[id].chunk.js'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -42,12 +41,10 @@ const config = {
       },
       {
         test: /\.css$/,
-        include: resolve('src'),
         use: ['style-loader', 'css-loader', 'postcss-loader']
       },
       {
-        test: /\.(png|jpe?g|gif|webp)$/,
-        include: resolve('src'),
+        test: /\.(png|jpe?g|gif|webp|svg)$/,
         use: {
           loader: 'url-loader',
           options: {
@@ -77,24 +74,45 @@ const config = {
     stats: 'errors-only'
   },
   plugins: [
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'Vue Scrollspy',
+      template: './index.html'
+    })
   ]
 }
 
 module.exports = (env, argv) => {
-  if (argv.mode === 'development') {
-    config.plugins.push(
-      new HtmlWebpackPlugin({
-        title: 'Vue Scrollspy',
-        template: './index.html'
-      })
-    )
+  if (env.development) {
+    config.mode = 'development'
+  } else if (env.production) {
+    let { output, plugins } = config
+    output = Object.assign(output, {
+      path: resolve('lib'),
+      library: 'vue-use-scrollspy',
+      libraryTarget: 'umd',
+      umdNamedDefine: true
+    })
+    plugins.pop() // delete HtmlWebpackPlugin
+    config = Object.assign(config, {
+      mode: 'production',
+      entry: {
+        scrollspy: './src/components/scrollspy.js'
+      },
+      output,
+      plugins,
+      externals: 'vue'
+    })
+  } else if (env.docs) {
+    let { output } = config
+    output = Object.assign(output, {
+      path: resolve('dist')
+    })
+    config = Object.assign(config, {
+      mode: 'production',
+      output
+    })
   }
-  else if (argv.mode === 'production') {
-    config.entry = {
-      scrollspy: './src/components/scrollspy.js'
-    }
-    config.externals = 'vue'
-  }
+  
   return config;
 }

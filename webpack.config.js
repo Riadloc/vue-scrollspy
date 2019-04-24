@@ -106,7 +106,8 @@ module.exports = (env, argv) => {
   } else if (env.docs) {
     let { output } = config
     output = Object.assign(output, {
-      path: resolve('dist')
+      path: resolve('dist'),
+      publicPath: './'
     })
     config = Object.assign(config, {
       mode: 'production',

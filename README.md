@@ -8,6 +8,8 @@ A vue component for detecting enter/exit of elements in the viewport when the us
 
 Vue组件，用于当用户滚动内容时，检测节点进出视窗的情况，实现导航和节点内容的双向绑定
 
+[Demo](https://riadloc.github.io/vue-scrollspy)
+
 ## Installation
 ```console
 npm install vue-use-scrollspy --save

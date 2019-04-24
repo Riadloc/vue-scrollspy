@@ -53,7 +53,7 @@ const scrollSpy = {
       this.spy()
     },
     onEvent() {
-      this.fn = throttle(this.spy, 500)
+      this.fn = throttle(this.spy, 100)
       this.rootEl.addEventListener('scroll', this.fn)
     },
     offEvent() {

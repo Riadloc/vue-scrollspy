@@ -12,7 +12,7 @@ Vue组件，用于当用户滚动内容时，检测节点进出视窗的情况�
 
 ## Installation
 ```console
-npm install vue-use-scrollspy --save
+npm install vue-use-scrollspy -S
 ```
 ## Usage
 ```javascript
@@ -22,7 +22,7 @@ import Scrollspy from 'vue-use-scrollspy'
 ## Props
 
 | prop      | description   | type  | default |required|
-| ------------- |:-------------:|:-----:|:-------:|:-------:|
+|-------------|-------------|-----|-------|-------|
 |items|id list of target elements|Array|[]|true|
 |el|selector of elements container|String|window|false|
 |current|current actived id, can use `.sync` modifier to two-way data bindings|String|--|false|
@@ -32,7 +32,7 @@ import Scrollspy from 'vue-use-scrollspy'
 
 ## Events
 | name      | description |params|
-| -------|:--------:|:-------:|
+| -------|--------|-------|
 | on-update |Emit when current is changed|current actived id|
 
 
@@ -44,7 +44,7 @@ import Scrollspy from 'vue-use-scrollspy'
       :items="['#selection-1', '#selection-2', '#selection-3']"
       class="scroll-spy"
       tag="ul"
-      current-class="active-class">
+      active-class="active-class">
       <li><a href="#selection-1">One</a></li>
       <li><a href="#selection-2">Two</a></li>
       <li><a href="#selection-3">Three</a></li>

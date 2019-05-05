@@ -1,5 +1,5 @@
 import Vue from "vue"
-import { throttle } from '@/assets/utils'
+import { throttle, scrollTop as scrollTo } from '@/assets/utils'
 const scrollSpy = {
   props: {
     tag: {
@@ -21,15 +21,19 @@ const scrollSpy = {
     activeClass: {
       type: String
     },
+    navItem: {
+      type: String
+    },
     offset: {
       type: Number,
       default: 0
-    }
+    },
   },
   data() {
     return {
       targets: [],
-      activeIndex: -1
+      activeItem: '',
+      hasBound: false
     }
   },
   computed: {
@@ -47,7 +51,7 @@ const scrollSpy = {
   methods: {
     init() {
       if (this.current) {
-        this.activeIndex = this.items.indexOf(this.current)
+        this.activeItem = this.current
       }
       this.targets = this.items.map(node => document.querySelector(node))
       this.spy()
@@ -59,24 +63,21 @@ const scrollSpy = {
     offEvent() {
       this.rootEl.removeEventListener('scroll', this.fn)
     },
-    handleSpy() {
-      throttle(this.spy, 1000)
-    },
     spy() {
       const { targets, items } = this
       let hasInView = false
-      let activeIndex
+      let activeItem
       for (let i = 0; i < targets.length; i++) {
         const el = targets[i]
         let isInView = hasInView ? false : this.isInView(el)
         if (isInView) {
-          activeIndex = i
+          activeItem = items[i]
           hasInView = true
         }
       }
-      this.activeIndex = activeIndex
+      this.activeItem = activeItem
       
-      let current = activeIndex && items[activeIndex]
+      let current = activeItem
       if (this.current !== current) {
         this.$emit('update:current', current)
         this.$emit('on-update', current)
@@ -87,15 +88,7 @@ const scrollSpy = {
         return false
       }
       const elRect = el.getBoundingClientRect()
-      let rootElRect
-      if (this.el) {
-        rootElRect = document.querySelector(this.el).getBoundingClientRect()
-      } else {
-        rootElRect = {
-          top: 0,
-          height: window.innerHeight
-        }
-      }
+      const rootElRect = this.getRootRect()
       const { scrollTop } = this.getScrollDimensions()
       const vHeight = rootElRect.height
       const elTop = scrollTop + elRect.top - rootElRect.top + this.offset
@@ -115,10 +108,31 @@ const scrollSpy = {
         scrollTop
       }
     },
-    processClassName(classStr, index) {
+    getRootRect() {
+      let rootElRect
+      if (this.el) {
+        rootElRect = document.querySelector(this.el).getBoundingClientRect()
+      } else {
+        rootElRect = {
+          top: 0,
+          height: window.innerHeight
+        }
+      }
+      return rootElRect
+    },
+    scrollFn(el) {
+      console.log(33)
+      const target = document.querySelector(el)
+      const elRect = target.getBoundingClientRect()
+      const rootElRect = this.getRootRect()
+      const { scrollTop } = this.getScrollDimensions()
+      const elTop = scrollTop + elRect.top - rootElRect.top
+      scrollTo(this.rootEl, scrollTop, elTop)
+    },
+    processClassName(classStr = '', item) {
       const clsList = classStr.split(' ')
       let curIndex = clsList.indexOf(this.activeClass)
-      if (this.activeIndex === index) {
+      if (this.activeItem === item) {
         if (!~curIndex) {
           clsList.push(this.activeClass)
         }
@@ -134,13 +148,25 @@ const scrollSpy = {
     const { tag, $slots } = this
     let children = $slots.default
     children = children.filter(vnode => vnode.tag)
+    console.log(children)
     const processedChildren = children.map((vnode, index) => {
-      let { staticClass = '' } = vnode.data || {}
-      staticClass = this.processClassName(staticClass, index)
+      let { staticClass = '', attrs = {}, on = {} } = vnode.data || {}
+      const to = attrs['data-to']
+      if (to) {
+        const callback = on.click || function () {}
+        const self = this
+        const fn = function(evt) {
+          self.scrollFn(to)
+          callback(evt)
+        }
+        on.click = fn
+        staticClass = this.processClassName(staticClass, to)
+      }
       return {
         ...vnode,
         data: {
           ...vnode.data,
+          on,
           staticClass
         }
       }

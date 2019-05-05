@@ -40,13 +40,19 @@
         </section>
       </article>
       <aside>
-        <scroll-spy :items="['#selection-1', '#selection-2', '#selection-3', '#selection-4', '#selection-5', '#selection-6']" class="scroll-spy" tag="ul" active-class="active-class">
-          <li><a href="#selection-1">Intel 8086</a></li>
-          <li><a href="#selection-2">History</a></li>
-          <li><a href="#selection-3">The first x86 design</a></li>
-          <li><a href="#selection-4">Buses and operation</a></li>
-          <li><a href="#selection-5">Hardware modes</a></li>
-          <li><a href="#selection-6">Registers and instructions</a></li>
+        <scroll-spy
+          :items="['#selection-1', '#selection-2', '#selection-3', '#selection-4', '#selection-5', '#selection-6']"
+          class="scroll-spy"
+          tag="ul"
+          active-class="active-class"
+        >
+          <h3>Wikipedia</h3>
+          <li data-to="#selection-1">Intel 8086</li>
+          <li data-to="#selection-2">History</li>
+          <li data-to="#selection-3">The first x86 design</li>
+          <li data-to="#selection-4">Buses and operation</li>
+          <li data-to="#selection-5">Hardware modes</li>
+          <li data-to="#selection-6">Registers and instructions</li>
         </scroll-spy>
       </aside>
     </main>
@@ -89,6 +95,11 @@ aside {
   width: 400px;
   flex: 0 1 400px;
 }
+
+h3 {
+  margin-bottom: .5rem;
+  margin-top: 0;
+}
 .article {
   background-color: #fff;
   padding: 1rem 2rem;
@@ -105,7 +116,12 @@ aside {
   padding: 2rem;
   margin: 0;
 }
-.active-class a {
+
+.scroll-spy li {
+  transition: all 500 ease-in-out;
+}
+
+.active-class {
   font-weight: bold;
   color: #42b983;
 }
